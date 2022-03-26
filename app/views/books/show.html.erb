@@ -1,0 +1,49 @@
+<main>
+ <% if flash[:notice] %>
+  <p id="notice" style="color: lightgreen">
+   <%= flash[:notice] %>
+  </p>
+ <% else %>
+  <p id="notice"></p>
+ <% end %>
+
+ <div class="container px-5 px-sm-0">
+
+ <% if @book.errors.any? %>
+  <div>
+   <ul style="color: red">
+    <h3><%= @book.errors.count %> error prphibited this obj from being saced:</h3>
+    <% @book.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+   </ul>
+  </div>
+ <% end %>
+
+  <div class="row">
+   <%= render 'books/user_info', book: @books, user: @user %>
+   <div class="col-md-8 offset-md-1">
+    <h2>Book detail</h2>
+    <table class="table">
+     <tbody>
+      <tr>
+       <td>
+       <%= image_tag @user.get_profile_image(45,45), class: 'attacment user_profile_image fallback'%><br>
+       <%= link_to @user.name, user_path(@user.id) %>
+       </td>
+       <td><%= link_to @book.title, book_path(@book) %> </td>
+       <td><%= @book.body %></td>
+       <td><% if @book.user == current_user %>
+            <%= link_to "Edit", edit_book_path(@book), class: 'btn btn-success' %>
+           <% end %></td>
+       <td><% if @book.user == current_user %>
+            <%= link_to "Destroy", book_path(@book), method: :delete, class: 'btn btn-sm btn-danger' %>
+           <% end %>
+       </td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+ </div>
+</main>
